@@ -28,6 +28,8 @@
     self.title = @"蓝牙中心设备";
     // 创建中心设备管理器，会回调centralManagerDidUpdateState
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:dispatch_get_main_queue()];
+    
+    // git test
 }
 
 /** 判断手机蓝牙状态
