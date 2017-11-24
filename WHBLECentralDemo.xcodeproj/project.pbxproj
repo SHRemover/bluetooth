@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		445209BA1FC81A1300CB343E /* PeripheralListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 445209B91FC81A1300CB343E /* PeripheralListViewController.m */; };
 		683D61BB1F1DF5BA0021A35A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D61BA1F1DF5BA0021A35A /* main.m */; };
 		683D61BE1F1DF5BA0021A35A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D61BD1F1DF5BA0021A35A /* AppDelegate.m */; };
 		683D61C11F1DF5BA0021A35A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D61C01F1DF5BA0021A35A /* ViewController.m */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		445209B81FC81A1300CB343E /* PeripheralListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeripheralListViewController.h; sourceTree = "<group>"; };
+		445209B91FC81A1300CB343E /* PeripheralListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeripheralListViewController.m; sourceTree = "<group>"; };
 		683D61B61F1DF5BA0021A35A /* WHBLECentralDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WHBLECentralDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		683D61BA1F1DF5BA0021A35A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		683D61BC1F1DF5BA0021A35A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -60,6 +63,8 @@
 			children = (
 				683D61BF1F1DF5BA0021A35A /* ViewController.h */,
 				683D61C01F1DF5BA0021A35A /* ViewController.m */,
+				445209B81FC81A1300CB343E /* PeripheralListViewController.h */,
+				445209B91FC81A1300CB343E /* PeripheralListViewController.m */,
 				683D61C21F1DF5BA0021A35A /* Main.storyboard */,
 				683D61B91F1DF5BA0021A35A /* Supporting Files */,
 			);
@@ -110,7 +115,7 @@
 				TargetAttributes = {
 					683D61B51F1DF5BA0021A35A = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 6VLU7VQA38;
+						DevelopmentTeam = T5ZDL3F6X2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -151,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445209BA1FC81A1300CB343E /* PeripheralListViewController.m in Sources */,
 				683D61C11F1DF5BA0021A35A /* ViewController.m in Sources */,
 				683D61BE1F1DF5BA0021A35A /* AppDelegate.m in Sources */,
 				683D61BB1F1DF5BA0021A35A /* main.m in Sources */,
@@ -275,7 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6VLU7VQA38;
+				DEVELOPMENT_TEAM = T5ZDL3F6X2;
 				INFOPLIST_FILE = WHBLECentralDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -288,7 +294,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6VLU7VQA38;
+				DEVELOPMENT_TEAM = T5ZDL3F6X2;
 				INFOPLIST_FILE = WHBLECentralDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

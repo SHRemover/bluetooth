@@ -7,17 +7,21 @@
 //  http://www.jianshu.com/p/38a4c6451d93
 
 #import "ViewController.h"
+#import "PeripheralListViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
 
 #define SERVICE_UUID        @"CDD1"
 #define CHARACTERISTIC_UUID @"CDD2"
 
 @interface ViewController () <CBCentralManagerDelegate,CBPeripheralDelegate>
-
+{
+    BOOL isNotifying; // 订阅状态
+}
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, strong) CBPeripheral *peripheral;
 @property (nonatomic, strong) CBCharacteristic *characteristic;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (nonatomic, retain) NSMutableArray *peripheralMArr;
 
 @end
 
@@ -29,7 +33,32 @@
     // 创建中心设备管理器，会回调centralManagerDidUpdateState
     self.centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:dispatch_get_main_queue()];
     
-    // git test
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"选取设备" style:(UIBarButtonItemStylePlain) target:self action:@selector(choosePeripheral:)];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
+    
+    UIButton *clickBtn = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    clickBtn.frame = CGRectMake(100, 400, 80, 50);
+    clickBtn.titleLabel.text = @"上升";
+    clickBtn.backgroundColor = [UIColor cyanColor];
+    [clickBtn addTarget:self action:@selector(touchDown:) forControlEvents:(UIControlEventTouchDown)];
+    [clickBtn addTarget:self action:@selector(touchUpInside:) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.view addSubview:clickBtn];
+    _peripheralMArr = [NSMutableArray arrayWithCapacity:30];
+}
+
+- (void)choosePeripheral:(UIBarButtonItem *)item {
+    NSLog(@"选取设备");
+    PeripheralListViewController *vc = [[PeripheralListViewController alloc] init];
+    vc.peripheralListArr = _peripheralMArr;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)touchDown:(UIButton *)sender {
+    NSLog(@"上升 ...ing");
+}
+- (void)touchUpInside:(UIButton *)sender {
+    NSLog(@"停止 上升");
 }
 
 /** 判断手机蓝牙状态
@@ -45,7 +74,8 @@
     if (central.state == CBManagerStatePoweredOn) {
         NSLog(@"蓝牙可用");
         // 根据SERVICE_UUID来扫描外设，如果不设置SERVICE_UUID，则扫描所有蓝牙设备
-        [central scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:SERVICE_UUID]] options:nil];
+//        [central scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:SERVICE_UUID]] options:nil];
+        [central scanForPeripheralsWithServices:nil options:nil];
     }
     if(central.state==CBManagerStateUnsupported) {
         NSLog(@"该设备不支持蓝牙");
@@ -65,8 +95,9 @@
     //        [central connectPeripheral:peripheral options:nil];
     //    }
     
+    [_peripheralMArr addObject:peripheral];
     // 连接外设
-    [central connectPeripheral:peripheral options:nil];
+//    [central connectPeripheral:peripheral options:nil];
 }
 
 /** 连接成功 */
@@ -118,14 +149,17 @@
         // 从外设开发人员那里拿到不同特征的UUID，不同特征做不同事情，比如有读取数据的特征，也有写入数据的特征
     }
     
-    // 这里只获取一个特征，写入数据的时候需要用到这个特征
-    self.characteristic = service.characteristics.lastObject;
-    
-    // 直接读取这个特征数据，会调用didUpdateValueForCharacteristic
-    [peripheral readValueForCharacteristic:self.characteristic];
-    
-    // 订阅通知
-    [peripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+    if (service.characteristics.count) {
+        
+        // 这里只获取一个特征，写入数据的时候需要用到这个特征
+        self.characteristic = service.characteristics.lastObject;
+        
+        // 直接读取这个特征数据，会调用didUpdateValueForCharacteristic
+        [peripheral readValueForCharacteristic:self.characteristic];
+        
+        // 订阅通知
+        [peripheral setNotifyValue:YES forCharacteristic:self.characteristic];
+    }
 }
 
 /** 订阅状态的改变 */
@@ -160,10 +194,13 @@
 
 /** 写入数据 */
 - (IBAction)didClickPost:(id)sender {
-    // 用NSData类型来写入
-    NSData *data = [self.textField.text dataUsingEncoding:NSUTF8StringEncoding];
-    // 根据上面的特征self.characteristic来写入数据
-    [self.peripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+    
+    if (isNotifying) {
+        // 用NSData类型来写入
+        NSData *data = [self.textField.text dataUsingEncoding:NSUTF8StringEncoding];
+        // 根据上面的特征self.characteristic来写入数据
+        [self.peripheral writeValue:data forCharacteristic:self.characteristic type:CBCharacteristicWriteWithResponse];
+    }
 }
 
 @end
