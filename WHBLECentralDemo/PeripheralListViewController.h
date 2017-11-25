@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class CBPeripheral;
 @interface PeripheralListViewController : UIViewController
 
+@property (nonatomic, copy) void (^clickHandler)(CBPeripheral *peripheral);
 @property (retain, nonatomic) NSArray *peripheralListArr;
 
 @end

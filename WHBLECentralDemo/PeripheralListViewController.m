@@ -8,6 +8,8 @@
 
 #import "PeripheralListViewController.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "PeripheralModel.h"
+
 
 @interface PeripheralListViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -24,6 +26,8 @@
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStyleGrouped)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+//    _tableView.estimatedRowHeight = 100;
+//    _tableView.rowHeight = UITableViewAutomaticDimension;
     
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     
@@ -39,11 +43,31 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    CBPeripheral *peripheral = _peripheralListArr[indexPath.row];
+//    CBPeripheral *peripheral = _peripheralListArr[indexPath.row];
+//    cell.textLabel.text = peripheral.name.length ? peripheral.name : [NSString stringWithFormat:@"%ld", indexPath.row];
     
-    cell.textLabel.text = peripheral.name.length ? peripheral.name : [NSString stringWithFormat:@"%ld", indexPath.row];
+    PeripheralModel *model = _peripheralListArr[indexPath.row];
+//    NSString *str = [NSString stringWithFormat:@"搜索到的设备:%@ RSSI:%@ name:%@ UUID:%@ advertisementData特征数据:%@", model.peripheral, model.RSSI, model.peripheral.name, model.peripheral.identifier, model.advertisementData];
+    
+    NSString *str = [NSString stringWithFormat:@"name:%@ -- RSSI:%@ \n UUID:%@ \n advertisementData:%@", model.peripheral.name, model.RSSI, model.peripheral.identifier, model.advertisementData];
+    
+    cell.textLabel.text = str;
+    cell.textLabel.numberOfLines = 0;
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 200;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    PeripheralModel *model = _peripheralListArr[indexPath.row];
+    if (self.clickHandler) {
+        self.clickHandler(model.peripheral);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
